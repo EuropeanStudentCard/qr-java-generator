@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>eu.europeanstudentcard</groupId>
+    <artifactId>qr-generator</artifactId>
+    <version>1.1.0</version>
+    <packaging>jar</packaging>
+
+    <name>qr-generator</name>
+    <description>QR Generator is used to generate a QR code to access the information of an European Student Card for the "european student card" project.</description>
+    <url>http://europeanstudentcard.eu</url>
+    <organization>
+        <name>European Student Card</name>
+        <url>http://europeanstudentcard.eu</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/EuropeanStudentCard/qr-java-generator</url>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.3</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
