@@ -1,12 +1,12 @@
 package eu.europeanstudentcard.esc;
 
-public class EscnFactoryException extends Exception {
+public class QRFactoryException extends Exception {
 
-    public EscnFactoryException() {
+    public QRFactoryException() {
         super();
     }
 
-    public EscnFactoryException(String message) {
+    public QRFactoryException(String message) {
         super(message);
     }
 }

@@ -1,20 +1,62 @@
-# ESCN Generator Java Library
+# QRFactory
 
-## Goal
-This library can be used to generate unique European Student Card Number (ESCN) for the "european student card" partners.
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Algorithm
+This library provides functionality to retrieve QR codes for European Student Card Numbers (ESCNs), supporting different orientations, color schemes, and sizes.
 
-The used algorithm to generate the ESCN is the RFC-4122 version 1. However, as allowed by the RFC, the number the physical address (MAC) used to ensure the uniqueness of the ESCN is replaced by another number of 48 bits :
+## Usage
 
-- A ```prefix``` (3 digits positive integer) to distinguish servers of a same institution
-- The ```Participant Identification Code (PIC)``` of the institution.  
+### Creating an Instance of QRFactory
+You can create an instance of `QRFactory` with either the default host or a custom host URL.
 
-## ESCN Structure
-The ESCN is a UUID of 16 bytes
-* Octet 0-3: time_low - The low field of the timestamp
-* Octet 4-5: time_mid - The middle field of the timestamp
-* Octet 6-7: time_hi_and_version - The high field of the timestamp multiplexed with the version number
-* Octet 8: clock_seq_hi_and_reserved - The high field of the clock sequence multiplexed with the variant
-* Octet 9: clock_seq_low - The low field of the clock sequence
-* Octet 10-15: node - The spatially unique node identifier **"Prefix + PIC"** 
+### Retrieving a QR Code for a Specific ESCN
+To retrieve a QR code for a European Student Card Number (ESCN), use the `generateQR` method. This method requires the ESCN, orientation, colors, and size of the QR code.
+
+
+The `generateQR` method will return the QR code as an SVG string, which can be directly used or saved.
+
+### Parameters
+
+- `cardNumber`: The European Student Card Number (ESCN) for which the QR code is generated.
+- `orientation`: Defines the orientation of the QR code. Available values:
+    - `VERTICAL`
+    - `HORIZONTAL`
+
+- `colours`: Defines the color scheme of the QR code. Available values:
+    - `NORMAL` (Standard colors)
+    - `INVERTED` (Inverted color scheme)
+
+- `size`: Defines the size of the QR code. Available values:
+    - `XS` (41x41px)
+    - `S` (61.5x61.5px)
+    - `M` (164x164px)
+
+## Enum Types
+
+The `QRFactory` class uses the following enum types:
+
+### `Orientation`
+Defines the orientation of the QR code:
+- `VERTICAL`
+- `HORIZONTAL`
+
+### `Colours`
+Defines the color scheme of the QR code:
+- `NORMAL`
+- `INVERTED`
+
+### `Size`
+Defines the size of the QR code:
+- `XS` - 41x41px
+- `S`  - 61.5x61.5px
+- `M`  - 164x164px
+
+## Class Documentation
+
+### `QRFactory`
+A factory class for interacting with the European Student Card Router API.
+
+#### Methods:
+- `static QRFactory create()`: Creates a new instance of `QRFactory` with the default host URL.
+- `static QRFactory create(String host)`: Creates a new instance of `QRFactory` with a custom host URL.
+- `String generateQR(String cardNumber, String orientation, String colours, String size)`: Retrieves the QR code as an SVG string based on the provided parameters.
