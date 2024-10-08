@@ -74,7 +74,7 @@ public class QRFactory {
      * @param colours:     the colours of the QR, normal/inverted
      * @param size:        the size of the QR, XS (41x41px) + logo, S (61.5x61.5px) + logo, M (164x164px) + logo
      * @throws QRFactoryException if an error occurs while generating the QR
-     * @return: the QR pointing to the ESC Verifier
+     * @return the QR pointing to the ESC Verifier
      */
     public String generateQR(String cardNumber, String orientation, String colours, String size) throws QRFactoryException {
         //Check the parameters
@@ -131,7 +131,6 @@ public class QRFactory {
      * @param colours:     the colours of the QR, normal/inverted
      * @param size:        the size of the QR, XS (41x41px) + logo, S (61.5x61.5px) + logo, M (164x164px) + logo
      * @throws QRFactoryException if the input parameters are invalid
-     * @return: the QR pointing to the ESC Verifier
      */
     protected void areValidParameters(String orientation, String colours, String size) throws QRFactoryException {
         if (!orientation.equalsIgnoreCase(QRConstants.VERTICAL_ORIENTATION) && !

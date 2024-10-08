@@ -1,6 +1,14 @@
 package eu.europeanstudentcard.esc.constants;
 
+/**
+ * Constant class for the ESC qr generator
+ *
+ */
 public class QRConstants {
+
+    /**
+     * The Error Level enum
+     */
     public enum ErrorLevel {
         L(1),
         M(0),
