@@ -6,7 +6,7 @@
 
     <groupId>eu.europeanstudentcard</groupId>
     <artifactId>qr-generator</artifactId>
-    <version>1.1.0</version>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
 
     <name>qr-generator</name>
@@ -22,6 +22,16 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>NTT Data</name>
+            <email>esc.support@nttdata.com</email>
+            <url>https://www.nttdata.com/</url>
+            <organization>com.nttdata</organization>
+            <organizationUrl>https://github.com/EuropeanStudentCard</organizationUrl>
+        </developer>
+    </developers>
 
     <scm>
         <connection>scm:git:git@github.com:EuropeanStudentCard/qr-java-generator.git</connection>
