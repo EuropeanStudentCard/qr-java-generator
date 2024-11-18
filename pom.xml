@@ -6,15 +6,15 @@
 
     <groupId>eu.europeanstudentcard</groupId>
     <artifactId>qr-generator</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <packaging>jar</packaging>
 
     <name>qr-generator</name>
     <description>QR Generator is used to generate a QR code to access the information of an European Student Card for the "european student card" project.</description>
-    <url>http://europeanstudentcard.eu</url>
+    <url>https://github.com/EuropeanStudentCard/qr-java-generator</url>
     <organization>
         <name>European Student Card</name>
-        <url>http://europeanstudentcard.eu</url>
+        <url>https://github.com/EuropeanStudentCard</url>
     </organization>
     <licenses>
         <license>
@@ -36,7 +36,7 @@
     <scm>
         <connection>scm:git:git@github.com:EuropeanStudentCard/qr-java-generator.git</connection>
         <developerConnection>scm:git:git@github.com:EuropeanStudentCard/qr-java-generator.git</developerConnection>
-        <url>git@github.com:EuropeanStudentCard/qr-java-generator.git</url>
+        <url>https://github.com/EuropeanStudentCard/qr-java-generator</url>
     </scm>
 
     <properties>
