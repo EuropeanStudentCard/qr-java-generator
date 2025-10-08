@@ -17,6 +17,7 @@ import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.InputStream;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
@@ -204,72 +205,76 @@ public class QRFactory {
         // Load both SVG files
         SAXSVGDocumentFactory factory = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName());
         Document qrDoc = factory.createDocument(qrSVG.toURI().toString());
-        Document logoDoc = factory.createDocument(logoSVG.toURI().toString(), cpr.getInputStream());
+        try (InputStream in = cpr.getInputStream()) {
+            Document logoDoc = factory.createDocument(logoSVG.toURI().toString(), in);
 
-        // Get width and height of both images
-        Element qrElement = qrDoc.getDocumentElement();
-        float qrWidth = Float.parseFloat(qrElement.getAttribute("width"));
-        float qrHeight = Float.parseFloat(qrElement.getAttribute("height"));
+            // Get width and height of both images
+            Element qrElement = qrDoc.getDocumentElement();
+            float qrWidth = Float.parseFloat(qrElement.getAttribute("width"));
+            float qrHeight = Float.parseFloat(qrElement.getAttribute("height"));
 
-        Element logoElement = logoDoc.getDocumentElement();
-        float logoWidth = Float.parseFloat(logoElement.getAttribute("width"));
-        float logoHeight = Float.parseFloat(logoElement.getAttribute("height"));
+            Element logoElement = logoDoc.getDocumentElement();
+            float logoWidth = Float.parseFloat(logoElement.getAttribute("width"));
+            float logoHeight = Float.parseFloat(logoElement.getAttribute("height"));
 
-        // Scale width and height of both images
-        qrWidth = qrWidth * scaleFactor;
-        qrHeight = qrHeight * scaleFactor;
-        logoWidth = logoWidth * scaleFactor;
-        logoHeight = logoHeight * scaleFactor;
-        float margin = this.qrMargin * scaleFactor;
+            // Scale width and height of both images
+            qrWidth = qrWidth * scaleFactor;
+            qrHeight = qrHeight * scaleFactor;
+            logoWidth = logoWidth * scaleFactor;
+            logoHeight = logoHeight * scaleFactor;
+            float margin = this.qrMargin * scaleFactor;
 
-        logoElement.setAttribute("width", String.valueOf(logoWidth));
-        logoElement.setAttribute("height", String.valueOf(logoHeight));
-        qrElement.setAttribute("width", String.valueOf(qrWidth));
-        qrElement.setAttribute("height", String.valueOf(qrHeight));
+            logoElement.setAttribute("width", String.valueOf(logoWidth));
+            logoElement.setAttribute("height", String.valueOf(logoHeight));
+            qrElement.setAttribute("width", String.valueOf(qrWidth));
+            qrElement.setAttribute("height", String.valueOf(qrHeight));
 
-        // Calculate the extra margin for the merged image
-        float extraMargin = ((qrWidth - (margin * 2)) * 0.2f) - margin;
+            // Calculate the extra margin for the merged image
+            float extraMargin = ((qrWidth - (margin * 2)) * 0.2f) - margin;
 
-        // Calculate new width and height for merged image
-        float mergedWidth = (isVertical ? qrWidth : (qrWidth + logoWidth)) + (extraMargin * 2);
-        float mergedHeight = (isVertical ? (qrHeight + logoHeight) : qrHeight) + (extraMargin * 2);
+            // Calculate new width and height for merged image
+            float mergedWidth = (isVertical ? qrWidth : (qrWidth + logoWidth)) + (extraMargin * 2);
+            float mergedHeight = (isVertical ? (qrHeight + logoHeight) : qrHeight) + (extraMargin * 2);
 
-        // Create a new empty SVG document for the merged result
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        Document mergedDoc = docBuilder.newDocument();
+            // Create a new empty SVG document for the merged result
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document mergedDoc = docBuilder.newDocument();
 
-        // Create the root <svg> element
-        Element rootElement = mergedDoc.createElement("svg");
-        rootElement.setAttribute("width", String.valueOf(mergedWidth));
-        rootElement.setAttribute("height", String.valueOf(mergedHeight));
-        rootElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-        mergedDoc.appendChild(rootElement);
+            // Create the root <svg> element
+            Element rootElement = mergedDoc.createElement("svg");
+            rootElement.setAttribute("width", String.valueOf(mergedWidth));
+            rootElement.setAttribute("height", String.valueOf(mergedHeight));
+            rootElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+            mergedDoc.appendChild(rootElement);
 
-        // Import the SVGs into the merged SVG
-        if (isVertical) {
-            Element firstImage = (Element) mergedDoc.importNode(logoElement, true);
-            firstImage.setAttribute("x", String.valueOf(extraMargin));
-            firstImage.setAttribute("y", String.valueOf(extraMargin));
-            rootElement.appendChild(firstImage);
+            // Import the SVGs into the merged SVG
+            if (isVertical) {
+                Element firstImage = (Element) mergedDoc.importNode(logoElement, true);
+                firstImage.setAttribute("x", String.valueOf(extraMargin));
+                firstImage.setAttribute("y", String.valueOf(extraMargin));
+                rootElement.appendChild(firstImage);
 
-            Element secondImage = (Element) mergedDoc.importNode(qrElement, true);
-            secondImage.setAttribute("x", String.valueOf(extraMargin));
-            secondImage.setAttribute("y", String.valueOf(logoHeight + extraMargin));
-            rootElement.appendChild(secondImage);
-        } else {
-            Element firstImage = (Element) mergedDoc.importNode(qrElement, true);
-            firstImage.setAttribute("x", String.valueOf(extraMargin));
-            firstImage.setAttribute("y", String.valueOf(extraMargin));
-            rootElement.appendChild(firstImage);
+                Element secondImage = (Element) mergedDoc.importNode(qrElement, true);
+                secondImage.setAttribute("x", String.valueOf(extraMargin));
+                secondImage.setAttribute("y", String.valueOf(logoHeight + extraMargin));
+                rootElement.appendChild(secondImage);
+            } else {
+                Element firstImage = (Element) mergedDoc.importNode(qrElement, true);
+                firstImage.setAttribute("x", String.valueOf(extraMargin));
+                firstImage.setAttribute("y", String.valueOf(extraMargin));
+                rootElement.appendChild(firstImage);
 
-            Element secondImage = (Element) mergedDoc.importNode(logoElement, true);
-            secondImage.setAttribute("x", String.valueOf(qrWidth + extraMargin));
-            secondImage.setAttribute("y", String.valueOf(extraMargin));
-            rootElement.appendChild(secondImage);
+                Element secondImage = (Element) mergedDoc.importNode(logoElement, true);
+                secondImage.setAttribute("x", String.valueOf(qrWidth + extraMargin));
+                secondImage.setAttribute("y", String.valueOf(extraMargin));
+                rootElement.appendChild(secondImage);
+            }
+
+            return serializeDocument(mergedDoc);
+        } catch (Exception e) {
+            throw new QRFactoryException(e.getMessage());
         }
-
-        return serializeDocument(mergedDoc);
     }
 
     /**
